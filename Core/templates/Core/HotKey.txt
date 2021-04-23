@@ -1,0 +1,131 @@
+    Hot Key ONERP
+
+    الرئيسية = {% url 'Core:index' %}       // shift + a = 65
+    فاتورة مبيعات الرئيسية = {% url 'Invoices:show_opened_invoices' 1 %}        // shift + s = 83
+    فاتورة مبيعات عرض = {% url 'Invoices:get_last_invoice' 1 %}         = shift + d = 68
+    فاتورة مبيعات جديد = {% url 'Invoices:make_invoice' 1 %}         shift + f = 70 
+
+
+    فاتورة مشتريات رئيسية = {% url 'Invoices:show_opened_invoices' 5 %}         shift + g = 71
+    فاتورة مشتريات عرض = {% url 'Invoices:get_last_invoice' 5 %}         shift + h = 72
+    فاتورة مشتريات جديد = {% url 'Invoices:make_invoice' 5 %}        shift + j = 74
+
+
+    فاتورة مرتجع مبيعات رئيسية = {% url 'Invoices:show_opened_invoices' 4 %}        shift + k = 75 
+    فاتورة مرتجع مبيعات  جديد = {% url 'Invoices:make_invoice' 4 %}         shift + l = 76
+    فاتورة مرتجع مبيعات عرض = {% url 'Invoices:get_last_invoice' 4 %}       shift + p = 80
+
+
+    فاتورة مرتجع مشتريات رئيسية  =  {% url 'Invoices:show_opened_invoices' 6 %}     shift + o = 79
+    فاتورة مرتجع مشتريات جديد = {% url 'Invoices:make_invoice' 6 %}         shift + i = 73
+    فاتورة مرتجع مشتريات عرض = {% url 'Invoices:get_last_invoice' 6 %}      shift + u = 85
+
+
+    الاسعار الرئيسية = {% url 'Invoices:show_opened_invoices' 7 %}      shift + y = 89 
+    الاسعار جديد = {% url 'Invoices:make_invoice' 7 %}       shift + t = 84
+    الاسعار عرض = {% url 'Invoices:get_last_invoice' 7 %}       shift + r = 82
+
+
+    تحويل المخزن الرئيسية = {% url 'Invoices:show_opened_invoices' 17 %}        shift + e = 69
+    تحويل المخزن عرض = {% url 'Invoices:get_last_invoice' 17 %}     shift + w = 87
+    تحويل المخزن جديد = {% url 'Invoices:make_invoice' 17 %}        shift + q = 81 
+
+
+    تحويل النقدية الرئيسية  = {% url 'Invoices:show_opened_invoices' 19 %}      shift + z = 90
+    تحويل النقدية جديد = {% url 'Invoices:treasury_transfer' %}     shift + x = 88 
+    تحوي النقدية عرض = {% url 'Invoices:get_last_invoice' 19 %}     shift + c = 67
+
+
+    اذن صرف النقدية الرئيسية = {% url 'Invoices:show_opened_invoices' 11 %}     shift + v = 86
+    اذن صرف النقدية عرض = {% url 'Invoices:get_last_invoice' 11 %}      shift + b = 66 
+    اذن صرف النقدية جديد  = {% url 'Invoices:expense_invoice' %}        shift + n = 78
+
+
+    اذن قبض النقدية الرئيسية = {% url 'Invoices:show_opened_invoices' 12 %}     shift + m = 77 
+    اذن قبض النقدية جديد = {% url 'Invoices:income_invoice' %}       , = 44 
+    اذن فبض النقدية عرض = {% url 'Invoices:get_last_invoice' 12 %}  / = 47
+
+
+    اضافة لرأس المال الرئيسية = {% url 'Invoices:show_opened_invoices' 13 %}
+    اضافة لراس المال جديد = {% url 'Invoices:capital_plus' %}
+    اضافة لراس المال عرض = {% url 'Invoices:get_last_invoice' 13 %}
+
+
+    سحب من راس المال الرئيسية = {% url 'Invoices:show_opened_invoices' 14 %}
+    سحب من راس المال عرض = {% url 'Invoices:get_last_invoice' 14 %}
+    سحب من راس المال جديد = {% url 'Invoices:capital_minus' %}
+
+
+    فاتورة تسوية عجز رئيسية = {% url 'Invoices:show_opened_invoices' 1 %}
+    فاتورة تسوية عجز جديد = {% url 'Invoices:make_invoice' 15 %}
+    فاتورة تسوية عجز عرض = {% url 'Invoices:get_last_invoice' 15 %}
+
+
+    فاتورة تسوية زيادة الرئيسية  = {% url 'Invoices:show_opened_invoices' 1 %}
+    فاتورة تسوية زيادة جديد  = {% url 'Invoices:make_invoice' 16 %}
+    فاتورة تسوية زيادة عرض = {% url 'Invoices:get_last_invoice' 16 %}
+
+
+    العملاءوالموردين عرض  = {% url 'Customers:CustomerList' %} a = 97
+    العملاء والموردين اضافة = {% url 'Customers:CustomerCreate' %}
+    العملاء والموردين سلة المهملات = {% url 'Customers:CustomerTrashList' %} d = 100
+
+
+    الشرائح عرض = {% url 'Customers:CategoryList' %} f = 102
+    الشرائح اضافة = {% url 'Customers:CategoryCreate' %} g = 103
+    الشرائح سلة المهملات = {% url 'Customers:CategoryTrashList' %} h = 104 
+
+
+    انواع العملاء عرض = {% url 'Customers:CustomerTypeList' %} j = 106 
+    انواع العملاء جديد = {% url 'Customers:CustomerTypeCreate' %} k = 107
+    انواع العملاء سلة المهملات = {% url 'Customers:CustomerTypeTrashList' %} l= 108
+
+   اسباب المكالمات عرض =  {% url 'Customers:CallReasonList' %}
+   اسباب المكالمات سلة المهملات = {% url 'Customers:CallReasonTrashList' %}
+   اسباب المكالمات اضافة =   {% url 'Customers:CallReasonCreate' %}
+
+   حالات المشروعات عرض = {% url 'Projects:ProjectList' %}
+   حالات المشروعات اضافة = {% url 'Projects:ProjectStatusCreate' %}
+   حالات المشروعات سلة المهملات = {% url 'Projects:ProjectStatusTrashList' %}
+
+   المشروعات عرض = {% url 'Projects:ProjectList' %}
+   المشروعات اضافة = {% url 'Projects:ProjectCreate' %}
+   المشروعات سلة المهملات = {% url 'Projects:ProjectTrashList' %} 
+
+   تذاكر الصيانة عرض = {% url 'Maintenance:TicketList' %}
+   تذاكر الصيانة اضافة = {% url 'Maintenance:TicketCreate' %}
+   تذاكر الصيانة سلة المهملات = {% url 'Maintenance:TicketTrashList' %}
+
+   مهامي = {% url 'Maintenance:TicketList' %}?employee={{ request.user.id }}
+   الاجندة عرض = {% url 'Calendar:TaskList' %}
+   الاجندة اضافة = {% url 'Calendar:TaskCreate' %}
+   
+   المهام عرض = {% url 'Tasks:TaskList' %}
+   المهام اضافة = {% url 'Tasks:TaskCreate' %}
+   المهام سلة المهملات = {% url 'Tasks:TaskTrashList' %}
+   المهام سلة المنتهي = {% url 'Tasks:TaskListDone' %}
+
+    الاصناف عرض = {% url 'Products:ProductList' %}
+    الاصناف اضافة = {% url 'Products:ProductCreate' %}
+    الاصناف سلة المهملات = {% url 'Products:ProductTrashList' %}
+
+    قوائم الاسعار عرض = {% url 'Products:MainPricesList' %}
+    قوائم الاسعار اضافة = {% url 'Products:MainPricesListCreate' %}
+    قوائم الاسعار سلة المهملات = {% url 'Products:MainPricesTrashList' %}
+
+    وحدات الاصناف  = {% url 'Products:MainCategoryList' %}
+    وحدات الاصناف عرض =  {% url 'Products:UnitList' %} 
+    وحدات الاصناف اضافة = {% url 'Products:UnitCreate' %}
+    وحدات الاصناف سلة المهملات = {% url 'Products:UnitTrashList' %}
+
+
+
+    
+        
+
+        
+
+
+
+
+

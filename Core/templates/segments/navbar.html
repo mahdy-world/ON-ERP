@@ -1,0 +1,1821 @@
+<aside class="main-sidebar sidebar-dark-navy elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'Core:index' %}" class="brand-link">
+
+        <span class="brand-text font-weight-light">ONERP</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                {% if request.user.avatar %}
+                    <img src="{{ request.user.avatar.url }}" class="img-circle elevation-2" alt="User Image">
+                {% else %}
+                    {% load staticfiles %}
+                    <img src="{% static 'AdminLTE/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2"
+                         alt="User Image">
+                {% endif %}
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ request.user }}</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <form method="get" action="{% url 'Customers:CustomerList' %}">
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" name="q" type="search"
+                           placeholder="بحث عن عميل ..."
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        
+
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Core:index' %}">
+                        <i class="fa fa-home nav-icon"> </i>
+                        <p>
+                           الرئيسية
+                        </p>
+                    </a>
+                </li>
+
+                <!-- Invoices -->
+                {% if request.user.has_access_to_invoices %}
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-list-alt nav-icon"></i>
+                            <p>
+                                الفواتير
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {% if perms.Invoices.add_sales_invoice or perms.Invoices.access_sales_invoice_menu %}
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مبيعات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_sales_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 1 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_sales_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 1 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_purchase_invoice or perms.Invoices.access_purchase_invoice_menu %}
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مشتريات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_purchase_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 5 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_purchase_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 5 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_reverse_sales_invoice or perms.Invoices.access_reverse_sales_invoice_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مرتجع مبيعات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_reverse_sales_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 4 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_reverse_sales_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 4 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_reverse_purchase_invoice or perms.Invoices.access_reverse_purchase_invoice_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مرتجع مشتريات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_reverse_purchase_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 6 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_reverse_purchase_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 6 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            {% if perms.Invoices.add_quotation or perms.Invoices.access_quotation %}
+                                <li class="nav-item">
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 7 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt"></i>
+                                            <p>
+                                                عرض أسعار
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_quotation %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 7 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_quotation %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 7 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_branch_transfer or perms.Invoices.access_branch_transfer_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 17 %}">
+                                        <i class="fa fa-list-alt"></i>
+                                       <p>
+                                        تحويل مخزون
+                                        <i class="right fas fa-angle-left"></i>
+                                       </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_branch_transfer %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 17 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_branch_transfer_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 17 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% if perms.Invoices.add_treasury_transfer or perms.Invoices.access_treasury_transfer_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 19 %}">
+                                        <i class="fa fa-list-alt"></i>
+                                       <p>
+                                        تحويل نقدية
+                                        <i class="right fas fa-angle-left"></i>
+                                       </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_treasury_transfer %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:treasury_transfer' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_treasury_transfer_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 19 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            <div class="dropdown-divider"></div>
+                            {% if perms.Invoices.add_outcome_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 11 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-minus-circle"></i>
+                                       <p>
+                                        إذن صرف نقدية
+                                        <i class="right fas fa-angle-left"></i>
+                                       </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_outcome_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:expense_invoice' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.add_outcome_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 11 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                            {% endif %}
+                            {% if perms.Invoices.add_income_invoice %}
+                                <li class="nav-item">
+                                <a class="nav-link"
+                                   href="{% url 'Invoices:show_opened_invoices' 12 %}"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-plus-circle"></i>
+                                  <p>
+                                    إذن قبض نقدية
+                                    <i class="right fas fa-angle-left"></i>
+                                  </p>
+                                </a>
+                            {% endif %}
+                            <ul class="nav nav-treeview">
+                                {% if perms.Invoices.add_income_invoice %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Invoices:income_invoice' %}" class="nav-link"
+                                           data-toggle="modal"
+                                           data-target="#sub_modal">
+                                            <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                    {% if perms.Invoices.add_outcome_invoice %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Invoices:get_last_invoice' 12 %}"
+                                               class="dropdown-item"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    </ul>
+                                    </li>
+                                {% endif %}
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_capital %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 13 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-plus-circle"></i>
+                                       <p>
+                                        إضافة لرأس المال
+                                        <i class="right fas fa-angle-left"></i>
+                                       </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:capital_plus' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.add_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 13 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                            {% endif %}
+                            {% if perms.Invoices.minus_capital %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 14 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-minus-circle"></i>
+                                        <p>
+                                            سحب من رأس المال
+                                        <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.minus_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:capital_minus' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.minus_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 14 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_stock_minus_invoice or perms.Invoices.access_stock_minus_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 1 %}">
+                                        <i class="fa fa-arrow-circle-down"></i>
+                                        <p>
+                                            فاتورة تسوية عجز
+                                        <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_stock_minus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 15 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_stock_minus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 15 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% if perms.Invoices.add_stock_plus_invoice or perms.Invoices.access_stock_plus_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 1 %}">
+                                        <i class="fa fa-arrow-circle-up"></i>
+                                        <p>
+                                            فاتورة تسوية زيادة
+                                        <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_stock_plus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 16 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_stock_plus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 16 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if request.user.has_access_to_invoices %}
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-list-alt nav-icon"></i>
+                            <p>
+                                فواتير ماجد
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {% if perms.Invoices.add_sales_invoice or perms.Invoices.access_sales_invoice_menu %}
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مبيعات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_sales_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 1 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_sales_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 1 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_purchase_invoice or perms.Invoices.access_purchase_invoice_menu %}
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مشتريات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_purchase_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 5 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_purchase_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 5 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_reverse_sales_invoice or perms.Invoices.access_reverse_sales_invoice_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مرتجع مبيعات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_reverse_sales_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 4 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_reverse_sales_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 4 %}" class="nav-link">
+                                                    <i class="fa fa-list-alt nav-icon"></i>
+                                                    <p>
+                                                        عرض
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if perms.Invoices.add_reverse_purchase_invoice or perms.Invoices.access_reverse_purchase_invoice_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt nav-icon"></i>
+                                        <p>
+                                            فاتورة مرتجع مشتريات
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_reverse_purchase_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 6 %}" class="nav-link">
+                                                    <i class="fa fa-plus-circle nav-icon"></i>
+                                                    <p>
+                                                        جديد
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_reverse_purchase_invoice_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 6 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            {% if perms.Invoices.add_quotation or perms.Invoices.access_quotation %}
+                                <li class="nav-item">
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 7 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-list-alt"></i>
+                                        عرض أسعار
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_quotation %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 7 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_quotation %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 7 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_branch_transfer or perms.Invoices.access_branch_transfer_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 17 %}">
+                                        <i class="fa fa-list-alt"></i>
+                                        تحويل مخزون
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_branch_transfer %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 17 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_branch_transfer_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 17 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% if perms.Invoices.add_treasury_transfer or perms.Invoices.access_treasury_transfer_menu %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 19 %}">
+                                        <i class="fa fa-list-alt"></i>
+                                        تحويل نقدية
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_treasury_transfer %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:treasury_transfer' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_treasury_transfer_menu %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 19 %}" class="nav-link"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            <div class="dropdown-divider"></div>
+                            {% if perms.Invoices.add_outcome_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 11 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-minus-circle"></i>
+                                        إذن صرف نقدية
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_outcome_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:expense_invoice' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.add_outcome_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 11 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                            {% endif %}
+                            {% if perms.Invoices.add_income_invoice %}
+                                <li class="nav-item">
+                                <a class="nav-link"
+                                   href="{% url 'Invoices:show_opened_invoices' 12 %}"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-plus-circle"></i>
+                                    إذن قبض نقدية
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="nav nav-treeview">
+                                {% if perms.Invoices.add_income_invoice %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Invoices:income_invoice' %}" class="nav-link"
+                                           data-toggle="modal"
+                                           data-target="#sub_modal">
+                                            <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                    {% if perms.Invoices.add_outcome_invoice %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Invoices:get_last_invoice' 12 %}"
+                                               class="dropdown-item"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    </ul>
+                                    </li>
+                                {% endif %}
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_capital %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 13 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-plus-circle"></i>
+                                        إضافة لرأس المال
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:capital_plus' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.add_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 13 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                            {% endif %}
+                            {% if perms.Invoices.minus_capital %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{% url 'Invoices:show_opened_invoices' 14 %}"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-minus-circle"></i>
+                                        سحب من رأس المال
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.minus_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:capital_minus' %}" class="nav-link"
+                                                   data-toggle="modal"
+                                                   data-target="#sub_modal">
+                                                    <i class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.minus_capital %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 14 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            <div class="dropdown-divider"></div>
+
+                            {% if perms.Invoices.add_stock_minus_invoice or perms.Invoices.access_stock_minus_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 1 %}">
+                                        <i class="fa fa-arrow-circle-down"></i>
+                                        فاتورة تسوية عجز
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_stock_minus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 15 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_stock_minus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 15 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% if perms.Invoices.add_stock_plus_invoice or perms.Invoices.access_stock_plus_invoice %}
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-haspopup="true"
+                                       aria-expanded="false"
+                                       href="{% url 'Invoices:show_opened_invoices' 1 %}">
+                                        <i class="fa fa-arrow-circle-up"></i>
+                                        فاتورة تسوية زيادة
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {% if perms.Invoices.add_stock_plus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:make_invoice' 16 %}" class="nav-link"><i
+                                                        class="fa fa-plus-circle"></i> جديد</a></li>
+                                        {% endif %}
+                                        {% if perms.Invoices.access_stock_plus_invoice %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Invoices:get_last_invoice' 16 %}"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-list-alt"></i> عرض</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <!-- Customers -->
+                <li class="nav-item">
+                    <a class="nav-link " href="#"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-users nav-icon"></i>
+                            <p>
+                            </i>
+                            خدمة العملاء
+                            <i class="right fas fa-angle-left">
+                            </p>
+                        </i>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {% if perms.Customers.add_customer or perms.Custoemrs.access_customer_menu %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Customers:CustomerList' %}">
+                                    <i class="fa fa-users"></i>
+                                 <p>
+                                    العملاء والموردين
+                                    
+                                 </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-user-plus"></i> إضافة</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerList' %}" class="nav-link"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerTrashList' %}" class="nav-link"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.Customers.add_customer or perms.Custoemrs.access_customer_menu %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Customers:CustomerTypeList' %}">
+                                    <i class="fa fa-users"></i>
+                                    <p>
+                                        انواع العملاء
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerTypeCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-user-plus"></i></a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerTypeList' %}" class="nav-link"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CustomerTypeTrashList' %}" class="nav-link"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if perms.Customers.add_customer_category or perms.Custoemrs.access_customer_category_menu %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Customers:CategoryList' %}">
+                                    <i class="fa fa-users"></i>
+                                    <p>
+                                        شرائح العملاء والموردين
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer_category %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CategoryCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_category_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CategoryList' %}" class="nav-link"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_category_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CategoryTrashList' %}" class="nav-link"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if perms.Customers.add_customer or perms.Custoemrs.access_customer_menu %}
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fa fa-question-circle"></i>
+                                    <p>
+                                        أسباب المكالمات
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CallReasonCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CallReasonList' %}" class="nav-link"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Customers:CallReasonTrashList' %}" class="nav-link"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Projects -->
+                {% if request.user.has_access_to_projects %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fab fa-fort-awesome nav-icon"></i>
+                            <p>
+                                المشروعات
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
+                            
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {% if perms.Customers.add_customer or perms.Custoemrs.access_customer_menu %}
+                                <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Projects:ProjectList' %}">
+                                    <i class="fa fa-battery-quarter"></i>
+                                    <p>
+                                    حالات المشروعات
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectStatusCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-user-plus"></i> إضافة</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectStatusList' %}"
+                                               class="dropdown-item"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectStatusTrashList' %}"
+                                               class="dropdown-item"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                            {% if perms.Customers.add_customer_category or perms.Custoemrs.access_customer_category_menu %}
+                                <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Projects:ProjectList' %}">
+                                    <i class="fab fa-fort-awesome"></i>
+                                    <p>
+                                        عرض المشروعات
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% if perms.Customers.add_customer_category %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectCreate' %}" class="nav-link"
+                                               data-toggle="modal" data-target="#sub_modal"><i
+                                                    class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_category_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectList' %}" class="nav-link"><i
+                                                    class="fa fa-list-alt"></i> عرض</a></li>
+                                    {% endif %}
+                                    {% if perms.Customers.access_customer_category_menu %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'Projects:ProjectTrashList' %}" class="nav-link"><i
+                                                    class="fa fa-trash"></i> سلة المهملات</a></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <!-- Maintenance -->
+                {% if request.user.has_access_to_maintenance %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-cogs nav-icon"></i>
+                            <p>
+                                الصيانة
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Customers:CustomerList' %}">
+                                    <i class="fa fa-users"></i>
+                                    <p>
+                                        تذاكر الصيانة
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'Maintenance:TicketCreate' %}" class="nav-link"
+                                           data-toggle="modal" data-target="#sub_modal"><i
+                                                class="fa fa-user-plus"></i> إضافة</a></li>
+
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'Maintenance:TicketList' %}" class="nav-link"><i
+                                                class="fa fa-list-alt"></i> عرض</a></li>
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'Maintenance:TicketList' %}?employee={{ request.user.id }}"
+                                           class="dropdown-item"><i
+                                                class="fa fa-list"></i> مهامي</a></li>
+
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'Maintenance:TicketTrashList' %}" class="nav-link"><i
+                                                class="fa fa-trash"></i> سلة المهملات</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <!-- Calendar -->
+                {% if request.user.has_access_to_calendar %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-calendar nav-icon"></i>
+                           <p>
+                            الاجندة
+                            <i class="right fas fa-angle-left"></i>
+                           </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Branches:BranchList' %}">
+                                    <i class="fa fa-calendar"></i>
+                                    <p>
+                                        الأجندة
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{% url 'Calendar:TaskCreate' %}" class="nav-link"
+                                           data-toggle="modal" data-target="#sub_modal"><i
+                                                class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'Calendar:TaskList' %}" class="nav-link"><i
+                                                class="fa fa-list-alt"></i> عرض</a></li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><i
+                                                class="fa fa-trash"></i> سلة المهملات</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+
+                {% if request.user.has_access_to_calendar %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="#"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-tasks nav-icon"></i>
+                           <p>
+                            المهام
+                            <i class="right fas fa-angle-left"></i>
+                           </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fa fa-calendar"></i>
+                                    <p>
+                                        المهام
+
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{% url 'Tasks:TaskCreate' %}" class="nav-link"
+                                           data-toggle="modal" data-target="#sub_modal"><i
+                                                class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'Tasks:TaskList' %}" class="nav-link"><i
+                                                class="fa fa-list-alt"></i> عرض</a></li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'Tasks:TaskTrashList' %}" class="nav-link"><i
+                                                class="fa fa-trash"></i> سلة المهملات</a></li>
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'Tasks:TaskListDone' %}" class="nav-link"><i
+                                                class="fa fa-trash"></i> سلة المنتهي</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <!-- Basic Info -->
+                <li class="nav-item">
+                    <a class="nav-link " href="#"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-th nav-icon"></i>
+                       <p>
+                        البيانات الأساسية
+                        <i class="right fas fa-angle-left"></i>
+                       </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:ProductList' %}">
+                                <i class="fa fa-th"></i>
+                                <p>
+                                    الاصناف
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ProductCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ProductList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ProductTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+
+
+                            </ul>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:MainPricesList' %}">
+                                <i class="fa fa-th-list"></i>
+                                <p>
+                                    قوائم الأسعار
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainPricesListCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainPricesList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainPricesTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:MainCategoryList' %}">
+                                <i class="fa fa-th-list"></i>
+                                <p>
+                                    وحدات الاصناف
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:UnitCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:UnitList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:UnitTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:MainCategoryList' %}">
+                                <i class="fa fa-th-list"></i>
+                                <p>
+                                    المجموعات الرئيسية
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainCategoryCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainCategoryList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:MainCategoryTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:SubCategoryList' %}">
+                                <i class="fa fa-list"></i>
+                                <p>
+                                    المجموعات الفرعية
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:SubCategoryCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:SubCategoryList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:SubCategoryTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:ManufactureList' %}">
+                                <i class="fa fa-industry"></i>
+                                <p>
+                                    الشركات المنتجة
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ManufactureCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ManufactureList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:ManufactureTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Products:BrandList' %}">
+                                <i class="fa fa-code-branch"></i>
+                                <p>
+                                    البراندات
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:BrandCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:BrandList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Products:BrandTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Branches:BranchList' %}">
+                                <i class="fa fa-building"></i>
+                                <p>
+                                    الفروع
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+
+                                    <a href="{% url 'Branches:BranchCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة فرع</a></li>
+
+
+                                <li class="nav-item">
+                                    <a href="{% url 'Branches:BranchList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض الفروع</a></li>
+
+
+                                <li class="nav-item">
+                                    <a href="{% url 'Branches:BranchTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> (الفروع) سلة المهملات</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Branches:BranchList' %}">
+                                <i class="fa fa-building"></i>
+                                <p>
+                                    المخازن
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Branches:WarehouseCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة مخزن</a></li>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{% url 'Branches:WarehouseList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض المخازن</a></li>
+
+
+                                <li class="nav-item">
+
+
+                                <li class="nav-item">
+                                    <a href="{% url 'Branches:WarehouseTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> (المخازن) سلة المهملات</a></li>
+
+
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Treasuries:TreasuryList' %}">
+                                <i class="fab fa-cc-visa"></i>
+                                <p>
+                                    الخزائن والحسابات البنكية
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Treasuries:TreasuryCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Treasuries:TreasuryList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Treasuries:TreasuryTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                        <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Treasuries:TreasuryList' %}">
+                                    <i class="fab fa-cc-visa"></i>
+                                    <p>
+                                        ماكينات الدفع
+                                    </p>
+                                    <i class="right fas fa-angle-left"></i>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{% url 'Treasuries:PaymentMachinesCreate' %}" class="nav-link"
+                                           data-toggle="modal" data-target="#sub_modal"><i
+                                                class="fa fa-plus-circle"></i> إضافة</a></li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'Treasuries:PaymentMachinesList' %}" class="nav-link"><i
+                                                class="fa fa-list-alt"></i> عرض</a></li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'Treasuries:PaymentMachinesTrashList' %}" class="nav-link"><i
+                                                class="fa fa-trash"></i> سلة المهملات</a></li>
+                                </ul>
+                                <div class="dropdown-divider"></div>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Invoices:SpendCategoryList' %}">
+                                <i class="fa fa-minus-circle"></i>
+                                <p>
+                                    تصنيفات المصروفات
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Invoices:SpendCategoryCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Invoices:SpendCategoryList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Invoices:SpendCategoryTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Partners:PartnerList' %}">
+                                <i class="fa fa-users"></i>
+                                <p>
+                                    الشركاء
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Partners:PartnerCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Partners:PartnerList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Partners:PartnerTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul><li class="nav-item">
+                            <a class="nav-link" href="{% url 'Partners:PartnerList' %}">
+                                <i class="fa fa-users"></i>
+                                <p>
+                                    الفنيين
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Technicians:TechnicianCreate' %}" class="nav-link"
+                                       data-toggle="modal" data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Technicians:TechnicianList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Technicians:TechnicianTrashList' %}" class="nav-link"><i
+                                            class="fa fa-trash"></i> سلة المهملات</a></li>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'HR:EmployeeList' %}">
+                                <i class="fa fa-users"></i>
+                                <p>
+                                    الموظفين
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'HR:EmployeeCreate' %}" class="nav-link" data-toggle="modal"
+                                       data-target="#sub_modal"><i
+                                            class="fa fa-user-plus"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'HR:EmployeeList' %}" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">
+                                <i class="fa fa-list"></i>
+                                <p>
+                                    الوظائف
+
+                                </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link" data-toggle="modal"
+                                       data-target="#sub_modal"><i
+                                            class="fa fa-plus-circle"></i> إضافة</a></li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link"><i
+                                            class="fa fa-list-alt"></i> عرض</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Settings -->
+                <li class="nav-item">
+                    <a class="nav-link " href="#"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-cogs nav-icon"></i>
+                      <p>
+                        الإعدادات
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {% if perms.Invoices.edit_invoice_setting %}
+                            <a class="nav-link" href="{% url 'Invoices:invoice_base_setting' %}"
+                               data-toggle="modal"
+                               data-target="#sub_modal">
+                                <i class="fa fa-list-alt"></i>
+                                إعدادات الفواتير
+                            </a>
+                        {% endif %}
+                        {% if perms.Invoices.edit_invoice_print_setting %}
+                            <a class="nav-link" href="{% url 'Invoices:invoice_setting' %}" data-toggle="modal"
+                               data-target="#sub_modal">
+                                <i class="fa fa-print"></i>
+                                إعدادات طباعة الفواتير
+                            </a>
+                        {% endif %}
+                        <a class="nav-link" href="{% url 'Barcode:barcode_setting' %}" data-toggle="modal"
+                           data-target="#sub_modal">
+                            <i class="fa fa-barcode"></i>
+                            إعدادات الملصقات
+                        </a>
+                        {% if perms.Maintenance.edit_maintenance_receipt_setting %}
+                            <a class="nav-link" href="{% url 'Maintenance:maintenance_print_setting' %}"
+                               data-toggle="modal"
+                               data-target="#sub_modal">
+                                <i class="fa fa-cog"></i>
+                                إعدادات طباعة إيصالات الصيانة
+                            </a>
+                        {% endif %}
+                        <a class="nav-link" href="" data-toggle="modal"
+                           data-target="#sub_modal">
+                            <i class="fa fa-globe-africa"></i>
+                            إعدادات الموقع
+                        </a>
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+                <li class="nav-item">
+                    <a class="nav-link " href="#"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-chart-line nav-icon"></i>
+                       <p>
+                        التقارير
+                        <i class="right fas fa-angle-left"></i>
+                       </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-list-alt"></i>
+                                تقارير الفواتير
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:InvoiceReport' %}?type=1" class="dropdown-item"><i
+                                                class="fa fa-arrow-circle-right"></i> فواتير المبيعات</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:InvoiceReport' %}?type=5" class="dropdown-item"><i
+                                                class="fa fa-arrow-circle-left"></i> فواتير المشتريات</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:InvoiceReport' %}?type=4" class="dropdown-item"><i
+                                                class="fa fa-angle-double-right"></i> فواتير مرتجع المبيعات</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:InvoiceReport' %}?type=6" class="dropdown-item"><i
+                                                class="fa fa-angle-double-left"></i> فواتير مرتجع المشتريات</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:InvoiceReport' %}?type=7" class="dropdown-item"><i
+                                                class="fa fa-arrows-alt"></i> عروض الاسعار</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:ExpenseReport' %}?type=11" class="dropdown-item"><i
+                                                class="fa fa-arrows-alt"></i> تقارير سندات الصرف</a></li>
+                                {% endif %}
+                                {% if perms.Invoices.access_sales_invoice_report %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'Reports:ExpenseReport' %}?type=12" class="dropdown-item"><i
+                                                class="fa fa-arrows-alt"></i> تقارير سندات القبض</a></li>
+                                {% endif %}
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-money-bill"></i>
+                                تقارير الخزائن
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:TreasuryBalanceReport' %}" class="nav-link"><i
+                                            class="fa fa-calculator"></i> أرصدة الخزائن</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:TreasuryTransactionReport' %}" class="nav-link"><i
+                                            class="fa fa-arrows-alt-h"></i> حركات الخزائن</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-warehouse"></i>
+                                تقارير المخازن
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:ItemStockReport' %}" class="nav-link"><i
+                                            class="fa fa-calculator"></i> رصيد مخزون منتج</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:item_transactions_report' %}" class="nav-link"><i
+                                            class="fa fa-arrows-alt-h"></i> حركة منتج</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:branch_stock_report' %}" class="nav-link"><i
+                                            class="fa fa-university"></i> جرد مخزن</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:items_below_order_stock' %}" class="nav-link"><i
+                                            class="fa fa-exclamation-triangle"></i> أصناف تحت حد الطلب</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:items_below_critical_stock' %}" class="nav-link"><i
+                                            class="fa fa-exclamation-triangle"></i> أصناف وصلت للرصيد الحرج</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:not_sold_items_report' %}" class="nav-link"><i
+                                            class="fa fa-info"></i> رواكد </a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-users"></i>
+                                تقارير العملاء/الموردين
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:CustomerStatementReport' %}" class="nav-link"><i
+                                            class="fa fa-calculator"></i> كشف حساب عميل/مورد</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:DebitorsReport' %}" class="nav-link"><i
+                                            class="fa fa-minus-circle"></i> الدائنون(له)</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:CreditorsReport' %}" class="nav-link"><i
+                                            class="fa fa-plus-circle"></i> المدينون(عليه)</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-calculator"></i>
+                                تقارير حسابية
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:financial_list' %}" class="nav-link"><i
+                                            class="fa fa-calculator"></i> القائمة المالية</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:profit_loss' %}" class="nav-link"><i
+                                            class="fa fa-calculator"></i> الأرباح والخسائر</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-hand-holding-usd"></i>
+                                تقارير رأس المال
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:partner_report_at' %}" class="nav-link"><i
+                                            class="fa fa-file-invoice-dollar"></i>نسب وارصدة الشركاء</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:partner_transactions' %}" class="nav-link"><i
+                                            class="fa fa-search-dollar"></i>حركات رأس المال</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Auth:account_setting' %}">
+                                <i class="fa fa-cogs"></i>
+                                تقارير الصيانة
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:maintenance_report' %}" class="nav-link"><i
+                                            class="fa fa-cogs"></i>تقارير الصيانة</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="fa fa-chart-pie"></i>
+                                تقارير رسومية
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:ExpenseGraphReport' %}?type=11" class="dropdown-item"><i
+                                            class="fa fa-minus-circle"></i>تقارير المصروفات</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:IncomeGraphReport' %}?type=12" class="dropdown-item"><i
+                                            class="fa fa-plus-circle"></i>تقارير المقبوضات</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:new_customers_report' %}" class="dropdown-item"><i
+                                            class="fa fa-users"></i>تقارير العملاء الجدد</a></li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Reports:employee_report' %}" class="dropdown-item"><i
+                                            class="fa fa-phone"></i>تقارير المكالمات </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- User -->
+                <li class="nav-item">
+                    <a class="nav-link " href="#"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>
+                            {{ request.user }}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {% if request.user.is_owner %}
+                            <a class="dropdown-item" href="{% url 'Setting:setup' %}" data-toggle="modal"
+                               data-target="#sub_modal">
+                                <i class="fas fa-cloud-download-alt"></i>
+                                تعديل الترخيص
+                            </a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{% url 'Website:HomePage' %}" target="_blank">
+                            <i class="fa fa-globe-africa"></i>
+                            الذهاب إلي الموقع
+                        </a>
+                        <a class="dropdown-item" href="{% url 'Auth:account_setting' %}" data-toggle="modal"
+                           data-target="#sub_modal">
+                            <i class="fa fa-cog"></i>
+                            إعدادات الحساب
+                        </a>
+                        <a class="dropdown-item" href="{% url 'Auth:change_password' %}" data-toggle="modal"
+                           data-target="#sub_modal">
+                            <i class="fa fa-asterisk"></i>
+                            تغيير كلمة السر
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'Auth:logout' %}">
+                            <i class="fa fa-power-off"></i>
+                            تسجيل خروج
+                        </a>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

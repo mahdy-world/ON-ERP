@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% block body %}
+    <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="{% url 'Products:MainPricesListUpdate' object.id %}" class="btn btn-info btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-edit"></i>
+            تعديل
+            {{ object.current_stock }}
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="{% url 'Products:product_create' %}" class="btn btn-success btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-plus-circle"></i>
+            اضافة صنف للقائمة
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="#" class="btn btn-primary btn-block"
+           data-toggle="modal" data-target="#prices_modal">
+            <i class="fa fa-calculator"></i>
+            معادلة شرائح الأسعار
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="#" class="btn btn-primary btn-block"
+           data-toggle="modal" data-target="#prices_modal2">
+            <i class="fa fa-calculator"></i>
+            معادلة شرائح الأسعار2
+        </a>
+    </div>
+
+    <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="" class="btn btn-warning btn-block" onclick="window.print()">
+            <i class="fa fa-print"></i>
+            طباعة
+        </a>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-list"></i>
+                معلومات القائمة
+            </div>
+            <div class="">
+                <table class="table table-hover">
+                    <tr>
+                        <td>
+                            الاسم
+                        </td>
+                        <td>
+                            {{ object.name }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+        <div class="card-header">
+            <i class="fa fa-list-alt"></i>
+                أصناف القائمة
+            <span class="float-left dont-print">
+                <a href="{% url 'Products:product_create' %}" class="btn-sm btn-success" title="إضافة"
+                   data-toggle="modal" data-target="#sub_modal">
+                    <i class="fa fa-plus-circle"></i>
+                </a>
+            </span>
+        </div>
+
+        <div class="modal fade" id="prices_modal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" id="sub_body">
+                    <span class="float-left">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </span>
+
+                    <div class="card-body table-responsive">
+                    <input type="hidden" id="list_id" value="{{ object.id }}">
+                        <table class="table table-hover text-center">
+                            <thead>
+                            <th>#</th>
+                            <th>الشريحة</th>
+                            <th colspan="4">معادلة</th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            {% for x in category_list %}
+                                <tr>
+                                <td>{{ x.customer_segment__id }}</td>
+                                <td>{{ x.customer_segment__name }}</td>
+                                <td>
+                                    <select>
+                                        <option disabled selected value="">نوع العملية</option>
+                                        <option value="plus">+</option>
+                                        <option value="minus">-</option>
+                                    </select>
+                                </td>
+                                <td><input placeholder="قيمة" name="new_value_rate" type="number"></td>
+                                <td>
+                                    <select>
+                                        <option disabled selected value="">نوع القيمة</option>
+                                        <option value="value">قيمة</option>
+                                        <option value="rate">%</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option disabled selected value="">جهة السعر</option>
+                                        <option value="prod">سعر رئيسي</option>
+                                        <option value="segm">سعر شريحة</option>
+                                    </select>
+                                </td>
+                                <td><button class="btn btn-block btn-info" onclick="EditAllSegments(this)"><i class="fa fa-check-circle"></i></button></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <form class="form-horizontal" method="post" action="{% url 'Products:PricesProductListEditAll' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input id="new_prices_list" name="new_prices_list" type="text" hidden required>
+                            <br><button class="btn btn-block btn-success">
+                                <i class="fa fa-check-circle"></i>
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="prices_modal2">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" id="sub_body">
+                    <span class="float-left">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </span>
+
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover text-center">
+                            <thead>
+                            <th>#</th>
+                            <th>المنتج</th>
+                            <th>السعر الحالي</th>
+                            <th>اخر تحديث للسعر</th>
+                            <th colspan="4">معادلة</th>
+                            </thead>
+                            <tbody>
+                            {% for x in products_list %}
+                                <tr>
+                                <td>{{ x.id }}</td>
+                                <td>{{ x.name }}</td>
+                                <td>{{ x.sell_price }}</td>
+                                <td>{{ x.sell_price_last_update.date.isoformat }}</td>
+                                <td>
+                                    <select onchange="change_price(this.parentNode.parentNode.children[7].children[0])">
+                                        <option disabled selected value="">نوع العملية</option>
+                                        <option value="plus">+</option>
+                                        <option value="minus">-</option>
+                                    </select>
+                                </td>
+                                <td><input placeholder="قيمة" onfocusout="change_price(this.parentNode.parentNode.children[7].children[0])" name="new_value_rate" type="number"></td>
+                                <td>
+                                    <select onchange="change_price(this.parentNode.parentNode.children[7].children[0])">
+                                        <option disabled selected value="">نوع القيمة</option>
+                                        <option value="value">قيمة</option>
+                                        <option value="rate">%</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="change_price(this)">
+                                        <option disabled selected value="">جهة السعر</option>
+                                        <option value="{{ object.sell_price|floatformat:"0" }}">سعر رئيسي</option>
+                                        <option value="{{ x.price|floatformat:"0" }}">سعر شريحة</option>
+                                    </select>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <form class="form-horizontal" method="post" action="#" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input id="new_prices_value" name="new_prices_value" type="text" hidden required>
+                            <br><button class="btn btn-block btn-success" disabled>
+                                <i class="fa fa-check-circle"></i>
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+                <table class="table table-hover" id="segments_all">
+                <thead>
+                <th>#</th>
+                <th>الصورة</th>
+                <th>الاسم</th>
+                <th>الوصف</th>
+                <th>المجموعة الرئيسية</th>
+                <th>المجموعة الفرعية</th>
+                <th>الشركة المنتجة</th>
+                <th>البراند</th>
+                <th>سعر الشراء</th>
+                <th>سعر التكلفة</th>
+                <th>سعر البيع</th>
+                <th></th>
+                </thead>
+                <tbody>
+                {% for x in products_list %}
+                    <tr>
+                        <td>{{ x.id }}</td>
+                        <td>{% if x.image %}<img src="{{ x.image.url }}" height='50px' width="50px">{% endif %}
+                        </td>
+                        <td>{{ x.name }}</td>
+                        <td>{{ x.description|linebreaks }}</td>
+                        <td>{{ x.sub_category.main_category }}</td>
+                        <td>{{ x.sub_category.name }}</td>
+                        <td>{{ x.manufacture }}</td>
+                        <td>{{ x.brand }}</td>
+                        <td>{{ x.purchase_price }}</td>
+                        <td>{{ x.cost_price }}</td>
+                        <td>{{ x.sell_price }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'Products:ProductCard' x.id %}" class="btn btn-success"
+                                   title="عرض">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="{% url 'Barcode:print_barcode' %}?barcode={{ x.id }}&quantity=0&par1={{ x.name }}&par2={{ x.sell_price|floatformat }}"
+                                   class="btn btn-primary"
+                                   title="طباعة ملصقات" target="_blank">
+                                    <i class="fas fa-barcode"></i>
+                                </a>
+                                <a href="{% url 'Products:ProductUpdate' x.id %}" class="btn btn-info"
+                                   title="تعديل" data-toggle="modal" data-target="#action_modal">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url 'Products:ProductDelete' x.id %}" class="btn btn-danger"
+                                   title="حذف" data-toggle="modal" data-target="#action_modal">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+        <div class="col-lg-12">
+            <div class="card">
+            <div class="card-header">
+                <i class="fa fa-list-alt"></i>
+                شرائح الأسعار
+            <span class="float-left dont-print">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </span>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-hover" id="segments_all">
+            <thead>
+            <th>#</th>
+            <th>اسم الشريحة</th>
+            <th>النسبة</th>
+            <th>العملية</th>
+            <th> العمليات</th>
+            <th></th>
+            </thead>
+            <tbody>
+            {% for x in CustomerPrices_list %}
+                <tr>
+                    <td>{{ x.id }}</td>
+                    <td>{{ x.customer_segment }}</td>
+                    <td>{{ x.discount }}</td>
+                    <td>{{ x.get_opration_display }}</td>
+                    <td>
+                    <div class="btn-group">
+                        <a href="{% url 'Products:CustomerPricesUpdate' x.id object.id %}" class="btn-sm btn-info"
+                           title="تعديل" data-toggle="modal" data-target="#action_modal">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                            <a href="{% url 'Products:CustomerPricesDelete' x.id object.id %}"
+                            class="btn-sm btn-danger"
+                            title="حذف" data-toggle="modal" data-target="#sub_modal">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                    </div>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+  
+    </div>
+
+{% endblock %}
+{% block js %}
+<script>
+   function EditAllSegments(Element) {
+        segment_id = Element.parentNode.parentNode.children[0];
+        plus_minus = Element.parentNode.parentNode.children[2].children[0];
+        new_value = Element.parentNode.parentNode.children[3].children[0];
+        value_rate = Element.parentNode.parentNode.children[4].children[0];
+        value_from = Element.parentNode.parentNode.children[5].children[0];
+        list_id = document.getElementById('list_id');
+        new_prices_list = document.getElementById('new_prices_list');
+
+        if (plus_minus.value !== '' && new_value.value !== '' && value_rate.value !== '' && value_from.value !== '' ){
+            if (new_prices_list.value !== ''){
+                new_prices_list.value += ','.concat(list_id.value).concat('-').concat(segment_id.innerText).concat('-').concat(plus_minus.value).concat('-').concat(new_value.value).concat('-').concat(value_rate.value).concat('-').concat(value_from.value);
+            }
+            else {
+                new_prices_list.value = list_id.value.concat('-').concat(segment_id.innerText).concat('-').concat(plus_minus.value).concat('-').concat(new_value.value).concat('-').concat(value_rate.value).concat('-').concat(value_from.value);
+            }
+            Element.className = 'btn btn-block btn-success'
+        }
+        else {
+            alert('ادخل القيم كاملة بطريقة صحيحة')
+        }
+   }
+</script>
+{% endblock %}

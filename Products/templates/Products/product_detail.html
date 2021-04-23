@@ -1,0 +1,727 @@
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% block body %}
+    <div class="col-lg-3 col-md-3 col-sm-6 dont-print">
+        <a href="{% url 'Products:ProductUpdate' object.id %}" class="btn btn-info btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-edit"></i>
+            تعديل
+            {{ object.current_stock }}
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 dont-print">
+        <a href="{% url 'Products:ProductNoteUpdate' object.id %}" class="btn btn-info btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-edit"></i>
+            تعديل الملاحظات
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 dont-print">
+        <a href="{% url 'Products:ProductPriceUpdate' object.id %}" class="btn btn-success btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-dollar-sign"></i>
+            تعديل الاسعار
+        </a>
+    </div>
+    <!-- <div class="col-lg-2 col-md-3 col-sm-6 dont-print">
+        <a href="" class="btn btn-primary btn-block"
+           data-toggle="modal" data-target="#sub_modal">
+            <i class="fa fa-arrow-circle-up"></i>
+            تغيير الوظيفة
+        </a>
+    </div> -->
+    <div class="col-lg-3 col-md-3 col-sm-6 dont-print">
+        <a href="" class="btn btn-warning btn-block" onclick="window.print()">
+            <i class="fa fa-print"></i>
+            طباعة
+        </a>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-list"></i>
+                معلومات الصنف
+            </div>
+            <div class="card-body">
+                {% if object.image %}
+                    <img src="{{ object.image.url }}" style="max-height: 200px; max-width: 100px;"
+                         class="img-responsive">
+                {% else %}
+                    <i class="fa fa-5x fa-image"></i>
+                {% endif %}
+                <table class="table table-responsive table-hover">
+                    <tr>
+                        <td>
+                            الاسم
+                        </td>
+                        <td>
+                            {{ object.name }}
+                            <input type="color" value="{{ object.bonus }}"  disabled > 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            الوصف
+                        </td>
+                        <td>
+                            {{ object.description|linebreaks }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            التصنيف الرئيسي
+                        </td>
+                        <td>
+                            {{ object.sub_category.main_category }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            التصنيف الفرعي
+                        </td>
+                        <td>
+                            {{ object.sub_category.name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            الشركة المصنعة
+                        </td>
+                        <td>
+                            {{ object.manufacture }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            البراند
+                        </td>
+                        <td>
+                            {{ object.brand }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            سعر الشراء
+                        </td>
+                        <td>
+                            {{ object.purchase_price }}
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>
+                            سعر التكلفة
+                        </td>
+                        <td>
+                            {{ object.cost_price }}
+                        </td>
+
+                    </tr> -->
+                    <tr>
+                        <td>
+                            سعر البيع
+                        </td>
+                        <td>
+                            {{ object.sell_price }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            اخر تحديث لسعر البيع
+                        </td>
+                        <td>
+                            {{ object.sell_price_last_update.date.isoformat }}
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-th"></i>
+                بيانات مخزنية
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive table-hover">
+
+                    <tr>
+                        <td>
+                            الوحدة الفرعية
+                        </td>
+                        <td>
+                            {{ object.sub_unit }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            العدد في الوحدة الفرعية
+                        </td>
+                        <td>
+                            {{ object.amount_in_sub_unit }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            الوحدة الفرعية 2
+                        </td>
+                        <td>
+                            {{ object.sub_sub_unit }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            العدد في الوحدة الفرعية 2
+                        </td>
+                        <td>
+                            {{ object.amount_in_sub_sub_unit }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            حد الطلب
+                        </td>
+                        <td>
+                            {{ object.full_stock }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            حد الصرف
+                        </td>
+                        <td>
+                            {{ object.max_sell }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            الرصيد الحرج
+                        </td>
+                        <td>
+                            {{ object.critical_stock }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+        <div class="card-header">
+            <i class="fa fa-list-alt"></i>
+                شرائح الأسعار
+            <span class="float-left dont-print">
+                <a href="{% url 'Products:PricesProductCreate' object.id %}" class="btn-sm btn-success" title="إضافة"
+                   data-toggle="modal" data-target="#sub_modal">
+                    <i class="fa fa-plus-circle"></i>
+                </a>
+                <span>&nbsp;</span>
+                <a href="#" class="btn-sm btn-info" title="تعديل"
+                   data-toggle="modal" data-target="#prices_modal">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </span>
+        </div>
+
+        <div class="modal fade" id="prices_modal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" id="sub_body">
+                    <span class="float-left">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </span>
+                    <span class="text-center"> السعر الرئيسي: {{ object.sell_price }}</span>
+                    <span class="text-center"> اخر تحديث للسعر الرئيسي: {{ object.sell_price_last_update.date.isoformat }}</span>
+
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover text-center">
+                            <thead>
+                            <th>#</th>
+                            <th>الشريحة</th>
+                            <th>السعر الحالي</th>
+                            <th>السعر الجديد</th>
+                            <th colspan="4">معادلة</th>
+                            </thead>
+                            <tbody>
+                            {% for x in product.productprices_set.all %}
+                            {% if x.deleted == 0 %}
+                                <tr>
+                                <td>{% if x.inactive == 1 %}<del>{{ x.id }}</del>{% else %}{{ x.id }}{% endif %}</td>
+                                <td>{% if x.inactive == 1 %}<del>{{ x.customer_segment }}</del>{% else %}{{ x.customer_segment }}{% endif %}</td>
+                                <td>{% if x.inactive == 1 %}<del>{{ x.price }}</del>{% else %}{{ x.price }}{% endif %}</td>
+                                <td><input id="new_price_value" name="new_price_value" type="number"
+                                   onfocusout="
+                                        prod_id = this.parentNode.parentNode.children[0].innerText;
+                                        prod_price = this.value;
+                                        new_prices_value = document.getElementById('new_prices_value');
+                                        if (prod_price !== ''){
+                                            new_prices_value.value += prod_id.concat('-').concat(prod_price).concat(',');
+                                        }
+                                    "></td>
+                                <td>
+                                    <select onchange="change_price(this.parentNode.parentNode.children[7].children[0])">
+                                        <option disabled selected value="">نوع العملية</option>
+                                        <option value="plus">+</option>
+                                        <option value="minus" selected>-</option>
+                                    </select>
+                                </td>
+                                <td><input onfocusout="change_price(this.parentNode.parentNode.children[7].children[0])" name="new_value_rate" type="number"></td>
+                                <td>
+                                    <select onchange="change_price(this.parentNode.parentNode.children[7].children[0])">
+                                        <option disabled selected value="">نوع القيمة</option>
+                                        <option value="value">قيمة</option>
+                                        <option value="rate">%</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="change_price(this)">
+                                        <option disabled selected value="">جهة السعر</option>
+                                        <option value="{{ object.sell_price|floatformat:"0" }}">سعر رئيسي</option>
+                                        <option value="{{ x.price|floatformat:"0" }}">سعر شريحة</option>
+                                    </select>
+                                </td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <form class="form-horizontal" method="post" action="{% url 'Products:PricesProductEditAll' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input id="new_prices_value" name="new_prices_value" type="text" hidden required>
+                            <br><button class="btn btn-block btn-success">
+                                <i class="fa fa-check-circle"></i>
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                    <span> السعر الرئيسي: {{ object.sell_price }}</span>
+                    </div>
+                    <div class="col-md-5">
+                    <span> اخر تحديث للسعر الرئيسي: {{ object.sell_price_last_update.date.isoformat }}</span>
+                    </div>
+                    <div class="col-md-4">
+                    <span><input type="checkbox" onchange="SegmentsNeedUpdate(this)"> <label style="font-size: x-small">عرض الشرائح التي تحتاج الي تحديث فقط</label> </span>
+                    <span><input type="hidden" id="update_date" value="{{ object.sell_price_last_update.date.isoformat }}"></span>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <table class="table table-hover" id="segments_all">
+                <thead>
+                <th>#</th>
+                <th>الشريحة</th>
+                <th>السعر قبل </th>
+                <th>النسبة </th>
+                <th>الخصم</th>
+                <th> السعر بعد</th>
+                <th>آخر تحديث</th>
+                <th>عمليات</th>
+                </thead>
+                <tbody>
+                {% for x in product.productprices_set.all|dictsort:"order" %}
+                {% if x.deleted == 0 %}
+                    <tr>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.id }}</del>{% else %}{{ x.id }}{% endif %}</td>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.customer_segment }}</del>{% else %}{{ x.customer_segment }}{% endif %}</td>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.price }}</del>{% else %}{{ x.price }}{% endif %}</td>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.discount }}</del>{% else %}{{ x.discount }}{% endif %}
+                    {% if x.opration == 1 %}
+                        {% if x.inactive == 1 %}<del> - </del>{% else %} - {% endif %}
+                    {% endif %}
+                    {% if x.opration == 2 %}
+                        {% if x.inactive == 2 %}<del>  + </del>{% else %} + {% endif %}
+                    {% endif %}
+                    </td>
+                    <td> {{ x.price|mul:x.discount|div:100}} </td>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.new_price }}</del>{% else %}{{ x.new_price }}{% endif %}</td>
+                    <td>{% if x.inactive == 1 %}<del>{{ x.last_update.date.isoformat }}</del>{% else %}{{ x.last_update.date.isoformat }}{% endif %}</td>
+                    <td>
+                        <a href="{% url 'Products:PricesProductUpdate' x.id object.id %}"
+                           class="btn-sm btn-info" data-toggle="modal" data-target="#sub_modal">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        {% if x.inactive == 0 %}
+                        <span>&nbsp;</span>
+                        <a href="{% url 'Products:PricesProductStop' x.id %}"
+                           class="btn-sm btn-danger" data-toggle="modal" data-target="#sub_modal">
+                            <i class="fa fa-ban"></i>
+                        </a>
+                        {% endif %}
+                        {% if x.inactive == 1 %}
+                        <span>&nbsp;</span>
+                        <a href="{% url 'Products:PricesProductActive' x.id %}"
+                           class="btn-sm btn-info" data-toggle="modal" data-target="#sub_modal">
+                            <i class="fa fa-ban"></i>
+                        </a>
+                        {% endif %}
+                        <span>&nbsp;</span>
+                        <a href="{% url 'Products:PricesProductDelete' x.id object.id %}"
+                           class="btn-sm btn-danger" data-toggle="modal" data-target="#sub_modal">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-list-alt"></i>
+                المكونات
+                <span class="float-left dont-print">
+                <a href="{% url 'Products:GroupedProductCreate' object.id %}" class="btn-sm btn-success" title="إضافة"
+                   data-toggle="modal" data-target="#sub_modal">
+                    <i class="fa fa-plus-circle"></i>
+                </a>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </span>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                    <td>#</td>
+                    <td>المنتج</td>
+                    <td>الكمية</td>
+                    <td></td>
+                    </thead>
+                    <tbody>
+                    {% for x in object.grouped_item.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ x.contain }}</td>
+                            <td>{{ x.quantity }}</td>
+                        <td>
+                                <a href="{% url 'Products:GroupedProductUpdate' x.id object.id %}"
+                                   class="btn-sm btn-info" data-toggle="modal" data-target="#sub_modal">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url 'Products:GroupedProductDelete' x.id object.id %}"
+                                   class="btn-sm btn-danger" data-toggle="modal" data-target="#sub_modal">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-list-alt"></i>
+                وحدات المنتج
+                <span class="float-left dont-print">
+                <a href="{% url 'Products:ProductUnitCreate' object.id %}" class="btn-sm btn-success" title="إضافة"
+                   data-toggle="modal" data-target="#sub_modal">
+                    <i class="fa fa-plus-circle"></i>
+                </a>
+            </span>
+            </div>
+            <div class="card-body">
+                <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                        <span> الوحدة الرئيسية للمنتج: {{ object.main_unit.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <th>#</th>
+                    <th>الوحدة</th>
+                    <th>كمية</th>
+                    <th>من وحدة</th>
+                    <th>عدد الوحدة الرئيسية</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    {% for x in units %}
+                        <tr>
+                            <td>{{ x.id }}</td>
+                            <td>{{ x.unit_name }}</td>
+                            <td>{{ x.unit_quantity }}</td>
+                            <td>{{ x.unit_from }}</td>
+                            <td>
+                                {% for key, value in prod_units.items  %}
+                                    {% if key == x.id %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        <td>
+                                <a href="{% url 'Products:ProductUnitUpdate' x.id %}"
+                                   class="btn-sm btn-info" data-toggle="modal" data-target="#sub_modal">
+                                    <i class="fa fa-edit"></i>
+                                </a>&nbsp;&nbsp;
+                                <a href="{% url 'Products:ProductUnitDelete' x.id %}"
+                                   class="btn-sm btn-danger" data-toggle="modal" data-target="#sub_modal">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-chart-area"></i>
+                إحصائيات وتقارير
+                <span class="float-left dont-print">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                </span>
+            </div>
+            
+            <div class="card-body">
+                <form class="form-inline" action="#" method="get">
+                    <div class="form-group">
+                        من
+                        <input name="from-date" class="form-control" type="date">
+                    </div>
+                    <div class="form-group">
+                        إلي
+                        <input name="to-date" class="form-control" type="date">
+                    </div>
+                    <button class="btn btn-info" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+                <h4>إحصائيات بيع وشراء</h4>
+                <table class="table table-responsive table-hover">
+                    <tr>
+                        <td>إجمالي شراء</td>
+                        <td></td>
+                        <td>إجمالي مرتجع شراء</td>
+                        <td></td>
+                        <td>إجمالي بيع</td>
+                        <td></td>
+                        <td>إجمالي مرتجع بيع</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>قيمة إجمالي شراء</td>
+                        <td></td>
+                        <td>قيمة إجمالي مرتجع شراء</td>
+                        <td></td>
+                        <td>قيمة إجمالي بيع</td>
+                        <td></td>
+                        <td>قيمة إجمالي مرتجع بيع</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>متوسط سعر شراء</td>
+                        <td></td>
+                        <td>متوسط سعر مرتجع شراء</td>
+                        <td></td>
+                        <td>متوسط سعر بيع</td>
+                        <td></td>
+                        <td>متوسط سعر مرتجع بيع</td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <h4>إحصائيات أرباح</h4>
+                <table class="table table-responsive table-hover">
+                    <tr>
+                        <td>الربح حسب متوسط السعر</td>
+                        <td></td>
+                        <td>النسبة</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>الربح حسب أخر سعر شراء</td>
+                        <td></td>
+                        <td>النسبة</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-chart-area"></i>
+                الحركات
+                <span class="float-left dont-print">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" id="ActionName" onkeyup="ActionNameFunction()" placeholder="ابحث بإسم الحركة" title="ابحث بإسم الحركة">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="ActionType" onkeyup="ActionTypeFunction()" placeholder="ابحث بنوع الحركة" title="ابحث بنوع الحركة">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="ActionTime" onkeyup="ActionTimeFunction()" placeholder="ابحث بتاريخ الحركة" title="ابحث بتاريخ الحركة">
+                    </div>
+                </div>
+
+                <table id="ActionsTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>اسم الحركة</th>
+                            <th>نوع الحركة</th>
+                            <th>تغيير من</th>
+                            <th>تغيير الي</th>
+                            <th>تاريخ الحركة</th>
+                            <th>وقت الحركة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for action in actions %}
+                        <tr>
+                            <td>{{ action.action_name }}</td>
+                            <td>{{ action.action_type }}</td>
+                            <td>{{ action.action_from }}</td>
+                            <td>{{ action.action_to }}</td>
+                            <td>{{ action.action_time|date:"d-m-Y" }}</td>
+                            <td>{{ action.action_time.time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block js %}
+<script>
+   function change_price(Element) {
+        plus_minus = Element.parentNode.parentNode.children[4].children[0].value;
+        new_value = Element.parentNode.parentNode.children[5].children[0].value;
+        value_rate = Element.parentNode.parentNode.children[6].children[0].value;
+        value_from = Element.value;
+        new_price = Element.parentNode.parentNode.children[3].children[0];
+
+        if (plus_minus !== '' && new_value !== '' && value_rate !== '' && value_from !== ''){
+            if (plus_minus === 'plus' && value_rate === 'value'){
+                new_price.value = parseInt(value_from) + parseInt(new_value);
+            }
+            else if (plus_minus === 'minus' && value_rate === 'value'){
+                new_price.value = parseInt(value_from) - parseInt(new_value);
+            }
+            else if (plus_minus === 'plus' && value_rate === 'rate'){
+                new_price.value = parseInt(value_from) + (parseInt(value_from) * parseInt(new_value) / 100);
+            }
+            else if (plus_minus === 'minus' && value_rate === 'rate'){
+                new_price.value = parseInt(value_from) - (parseInt(value_from) * parseInt(new_value) / 100);
+            }
+
+            new_price.focus();
+        }
+   }
+
+</script>
+
+<script>
+function ActionNameFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("ActionName");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("ActionsTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function ActionTypeFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("ActionType");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("ActionsTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function ActionTimeFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("ActionTime");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("ActionsTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function SegmentsNeedUpdate(Element) {
+        var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("update_date");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("segments_all");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[3];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) === -1) {
+            tr[i].style.display = "";
+          } else {
+              if (Element.checked===true) {
+                  tr[i].style.display = "none";
+              }
+              else {
+                  tr[i].style.display = "";
+              }
+          }
+        }
+      }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+
+{% load staticfiles %}
+
+{% for user in off %}
+<a href="{% url 'Chat:chat' request.user.id  user.id %}" data-toggle='modal' data-target="#sub_modal"  class="dropdown-item">
+    <!-- Message Start -->
+    
+    <div class="media">
+    
+        <img src="{% static 'AdminLTE/dist/img/user1-128x128.jpg' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+        <div class="media-body">
+            
+            {% if user.user.get_full_name %}    
+            <h3 class="dropdown-item-title">{{user.user.get_full_name}}</h3>
+            {% else %}
+            <h3 class="dropdown-item-title">{{user.user.username}}</h3>
+            {% endif %}
+            <span class="users-list-date" ><i class="fa fa-clock"></i>{{user.last_activity|timesince}}</span>
+        
+    </div>
+
+    </div>
+    <!-- Message End -->
+    
+</a>
+{% endfor %}
+
+{% for user in on %}
+<a href="{% url 'Chat:chat' request.user.id  user.id %}" data-toggle='modal' data-target="#sub_modal"  class="dropdown-item">
+    <!-- Message Start -->
+    
+    <div class="media">
+    
+        <img src="{% static 'AdminLTE/dist/img/user1-128x128.jpg' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+        <div class="media-body">
+            
+            {% if user.user.get_full_name %}    
+            <h3 class="dropdown-item-title">{{user.user.get_full_name}}</h3>
+            {% else %}
+            <h3 class="dropdown-item-title">{{user.user.username}}</h3>
+            {% endif %}
+        
+        <div class="badge badge-success">Online</div>
+    </div>
+
+    </div>
+    <!-- Message End -->
+    
+</a>
+{% endfor %}
+
+<div class="dropdown-divider"></div>
+
+<a href="#" class="dropdown-item dropdown-footer"></a>

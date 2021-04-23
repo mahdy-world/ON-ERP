@@ -1,0 +1,9 @@
+pip == 21.0.1
+django == 2.2
+django-cities-light
+djangorestframework
+reportlab
+django-crispy-forms
+django-select2
+django-mathfilters == 1.0.0
+django-widget-tweaks == 1.4.8

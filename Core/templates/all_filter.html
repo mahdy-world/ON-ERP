@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
+                            
+    <div class="dropdown-item" >
+    
+        <p style="float:right;">الفرع   : </p><br>
+        <select id="branch" name="branch">
+
+            {% for br in all_branches  %}
+
+                <option value="{{br.id}}">{{br.name}}</option>
+              
+            {% endfor %}
+        </select>
+    </div>
+
+    <a href="#" class="dropdown-item" >
+        <button class="btn btn-info" id="branch_click"  >بحث</button>
+    </a>
+        
+    <a href="#" class="dropdown-item" >
+        <p style="float: right;">من  : </p>
+        <input type="date" id="from_date" name="from_date">
+    </a>
+
+    <a href="#" class="dropdown-item" >
+        <p style="float:right;">الي   : </p>
+        <input type="date" id="to_date" name="to_date">
+    </a>
+
+
+    <a href="#" class="dropdown-item" >
+        <button class="btn btn-info" id="invoices_clk"  >بحث</button>
+    </a>
+</div>

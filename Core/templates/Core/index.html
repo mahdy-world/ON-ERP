@@ -1,0 +1,869 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body %}
+
+<!--مبيعات-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-info">
+        <div class="inner">
+            
+        
+            فواتير المبيعات
+
+            <h4 id='count1'>0</h4>
+
+            الاجمالي بعد الخصم
+                <h4 id='total1'>0</h4>
+    
+        
+        </div>
+        <div class="icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <a href="{% url 'Invoices:get_last_invoice' 1 %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--مشتريات-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-info">
+        <div class="inner">
+
+            فواتير المشتريات
+            <h4 id='count5'>0</h4>
+             الاجمالي بعد الخصم
+            <h4 id='total5'>0</h4>
+            
+          
+        </div>
+        <div class="icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <a href="{% url 'Invoices:get_last_invoice' 5 %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--مرتجع مبيعات-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-info">
+        <div class="inner">
+
+            فواتير مرتجع مبيعات
+            <h4 id='count4'>0</h4>
+            
+            الاجمالي بعد الخصم
+            <h4 id='total4'>0</h4>
+            
+            
+
+           
+        </div>
+        <div class="icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <a href="{% url 'Invoices:get_last_invoice' 4 %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--مرتجع مشتريات-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-info">
+        <div class="inner">
+
+            فواتير مرتجع مشتريات
+            <h4 id='count6'>0</h4>
+
+            الاجمالي بعد الخصم
+            <h4 id='total6'>0</h4>
+            
+          
+        </div>
+        <div class="icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <a href="{% url 'Invoices:get_last_invoice' 6 %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--العملاء -->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-lightblue">
+        <div class="inner">
+            <p>العملاء والموردين</p>
+            <h4 id="customer_sammery">0</h4>
+        </div>
+        <div class="icon">
+            <i class="fas fa-user"></i>
+        </div>
+        <a href="{% url 'Customers:CustomerList' %}" class="small-box-footer">
+            عرض الكل<i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--المصروفات-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-warning">
+        <div class="inner">
+           <p>المصروفات</p> 
+            <h4 id='total_out11'>0</h4>
+        </div>
+        <div class="icon">
+            <i class="fas fa-money-check-alt"></i>
+        </div>
+        <a href="{% url 'Reports:ExpenseReport' %}?type=11" class="small-box-footer">
+            عرض الكل<i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--دائن-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-success">
+        <div class="inner"> 
+            <p>دائن (له)</p>
+            <h4 id="all_depetors">0</h4>
+        </div>
+        <div class="icon">
+            <i class="far fa-credit-card"></i>
+        </div>
+        <a href="{% url 'Reports:DebitorsReport' %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--مدين-->
+<div class="col-lg-3 col-6">
+    <!-- small card -->
+    <div class="small-box bg-danger">
+        <div class="inner">
+            <p>مدين (عليه)</p>
+            <h4 id= "all_craditors">0</h4>
+        </div>
+        <div class="icon">
+            <i class="far fa-credit-card"></i>
+        </div>
+        <a href="{% url 'Reports:CreditorsReport' %}" class="small-box-footer">
+            عرض الكل <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+
+<!--البحث-->
+<div class="col-lg-12">
+    <div class="card card-info collapsed-card">
+        <div class="card-header">
+            <h3 class="card-title">قائمة البحث</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+
+
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Stock Search -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        بحث عن مخزون
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                            </button>
+
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Barcode Search -->
+                        <form class="form-inline" method="get" action="{% url 'Reports:ItemStockReport' %}">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="item" placeholder="بحث بالكود">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Name Search -->
+                        <form class="form-inline" method="get" action="{% url 'Reports:ItemStockReport' %}">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <select name="item">
+                                    {% for x in products %}
+                                    <option value="{{ x.id }}">
+                                        {{ x }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+          
+
+            <!-- Product Search -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        بحث عن منتج
+                        <div class="card-tools">
+
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                            </button>
+
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Barcode Search -->
+                        <form class="form-inline" method="get" action="{% url 'Products:ProductList' %}">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="id" placeholder="بحث بالكود">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Name Search -->
+                        <form class="form-inline" method="get" action="{% url 'Products:ProductList' %}">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="name" placeholder="بحث بالإسم">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer/Supplier Search -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        بحث عن عميل/مورد
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                            </button>
+
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline" method="get" action="{% url 'Customers:CustomerList' %}">
+                            <!-- Name Search -->
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="name" placeholder="بحث بالاسم">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <!-- Phone Search -->
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="phone" placeholder="بحث برقم التليفون">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <!-- Address Search -->
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                <input name="address" placeholder="بحث بالعنوان">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                <button type="submit" name="submit" value="1" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+</div>
+
+<!--Direct Chat-->
+ <div class="col-lg-6">
+        <!-- USERS LIST -->
+        <div class="card card-lightblue ">
+            <div class="card-header">
+                <h3 class="card-title">الدردشة المباشرة</h3>
+
+                <div class="card-tools">
+                    <span class="badge badge-danger">{{users.count}}</span>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0" id ="all_users">
+                
+                <ul class="users-list clearfix" style="padding: 20px;">
+
+
+                    <!--online users-->
+                    {% for user in on %}
+                    <li>
+                        <a href="{% url 'Chat:chat' request.user.id  user.id %}" data-toggle='modal' data-target="
+                            #sub_modal">
+                            <img src="{% static 'AdminLTE/dist/img/user1-128x128.jpg' %}" alt="User Image">
+
+                            {% if user.user.get_full_name %}
+                            <span class="users-list-date">{{user.user.get_full_name}}</span>
+                            {% else %}
+                            <span class="users-list-date">{{user.user.username}}</span>
+                            {% endif %}
+                            <div class="badge badge-success">Online</div>
+                        </a>
+                    </li>
+                    
+                    {% endfor %}
+                    
+                    <!--Offline users-->
+                    {% for user in off %}
+                    <li>
+                        <a href="{% url 'Chat:chat' request.user.id  user.id %}" data-toggle='modal' data-target="
+                            #sub_modal">
+                            <img src="{% static 'AdminLTE/dist/img/user1-128x128.jpg' %}" alt="User Image">
+
+                            {% if user.user.get_full_name %}
+                            <span class="users-list-date">{{user.user.get_full_name}}</span>
+                            {% else %}
+                            <span class="users-list-date">{{user.user.username}}</span>
+                            {% endif %}
+                            <span class="users-list-date" ><i class="fa fa-clock"></i>{{user.last_activity|timesince}}</span>
+                            
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                    
+                </ul>
+                <!-- /.users-list -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer text-center">
+                <a href="javascript:" style="color: white;">View All Users</a>
+            </div>
+            <!-- /.card-footer -->
+        </div>
+        <!--/.card -->
+</div>
+
+ <!--نسبة المبيعات-->
+<div class="col-lg-6 ">
+        <div class="card card-lightblue ">
+            <div class="card-header">
+                <h3 class="card-title">نسبة المبيعات</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                        data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                    </button>
+
+
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="myChart"></canvas>
+            </div>
+
+
+        </div>
+ </div>
+
+ <!--notifications-->
+<div class="col-lg-6">
+        <div class="card card-lightblue">
+            <div class="card-header">
+                <h3 class="card-title">الاشعارات </h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                        data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                    </button>
+
+
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {% for noti in noti %}
+                <div class="callout callout-info">
+                    <h5>{{noti.title}}</h5>
+
+                    <p>{{noti.content}}</p>
+                </div>
+                {% endfor %}
+
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+</div>
+
+ <!-- Opened Invoices -->
+ <div class="col-lg-6 ">
+        <div class="card card-lightblue">
+            <div class="card-header">
+                <h3 class="card-title">فواتير مفتوحة </h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                        data-widget="chat-pane-toggle"><i class="fas fa-plus"></i>
+                    </button>
+
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <td>
+                                الفاتورة
+                            </td>
+                            <td>
+                                قيمة الفاتورة
+                            </td>
+                        </thead>
+                        <tbody>
+                            {% for x in opened_invoices %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'Invoices:show_invoice' x.id %}">
+                                        {{ x }}
+                                    </a>
+                                </td>
+                                <td>{{ x.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!--  Tasks -->
+<div class="col-lg-6">
+    <div class="card card-warning collapsed-card">
+        <div class="card-header">
+            المهام 
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-widget="chat-pane-toggle"><i
+                        class="fas fa-plus"></i>
+                </button>
+
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="card card-warning">
+                <div class="card-header">
+                    مهام عامة
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-widget="chat-pane-toggle"><i
+                                class="fas fa-plus"></i>
+                        </button>
+        
+        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <td>
+                                    التاريخ
+                                </td>
+                                <td>
+                                    المحتوي
+                                </td>
+                                <td>
+                                    متعلقة بـ
+                                </td>
+                            </thead>
+                            <tbody>
+                                {% for x in public_tasks %}
+                                <tr>
+                                    <td>
+                                        {{ x.date.isoformat }}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'Calendar:TaskView' x.id %}">
+                                            {{ x }}
+                                        </a>
+                                    </td>
+                                    <td>{{ x.related_to }}</td>
+                                    <td>
+        
+                                        <a href="{% url 'Calendar:TaskDone' x.id %}" class="btn-sm btn-success" title="تم"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-check"></i>
+                                        </a>
+                                        <a href="{% url 'Calendar:TaskUpdate' x.id %}" class="btn-sm btn-info" title="تعديل"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        {% if x.task_type == 1 %}
+                                        <a href="{% url 'Calendar:TaskTransfer' x.id %}" class="btn-sm btn-warning"
+                                            title="تحويل" data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-exchange-alt"></i>
+                                        </a>
+                                        {% endif %}
+                                        <a href="{% url 'Calendar:TaskDelete' x.id %}" class="btn-sm btn-danger" title="حذف"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-warning">
+                <div class="card-header">
+                    مهام خاصة
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-widget="chat-pane-toggle"><i
+                                class="fas fa-plus"></i>
+                        </button>
+        
+        
+                    </div>
+                </div>
+                <div class="card-body">
+        
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <td>
+                                    التاريخ
+                                </td>
+                                <td>
+                                    المحتوي
+                                </td>
+                                <td>
+                                    متعلقة بـ
+                                </td>
+                                <td></td>
+                            </thead>
+                            <tbody>
+                                {% for x in private_tasks %}
+                                <tr>
+                                    <td>
+                                        {{ x.date.isoformat }}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'Calendar:TaskView' x.id %}">
+                                            {{ x }}
+                                        </a>
+                                    </td>
+                                    <td>{{ x.related_to }}</td>
+                                    <td>
+        
+                                        <a href="{% url 'Calendar:TaskDone' x.id %}" class="btn-sm btn-success" title="تم"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-check"></i>
+                                        </a>
+                                        <a href="{% url 'Calendar:TaskUpdate' x.id %}" class="btn-sm btn-info" title="تعديل"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        {% if x.task_type == 1 %}
+                                        <a href="{% url 'Calendar:TaskTransfer' x.id %}" class="btn-sm btn-warning"
+                                            title="تحويل" data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-exchange-alt"></i>
+                                        </a>
+                                        {% endif %}
+                                        <a href="{% url 'Calendar:TaskDelete' x.id %}" class="btn-sm btn-danger" title="حذف"
+                                            data-toggle="modal" data-target="#sub_modal">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Website Invoices -->
+<div class="col-lg-6">
+    <div class="card card-lightblue collapsed-card">
+        <div class="card-header">
+            طلبات الموقع
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-widget="chat-pane-toggle"><i
+                        class="fas fa-plus"></i>
+                </button>
+
+
+            </div>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+
+<!--Ajax for  invoices card without date-->
+<script>
+
+    
+    function invoices_value_no(my_type) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("total"+my_type).innerHTML = this.responseText;
+        }
+        };
+        xhttp.open("GET", "{% url 'Reports:invoice_summary' %}?report_type=value&type=" + my_type, true);
+        xhttp.send();
+    } 
+    function invoices_count_no(my_type) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("count"+my_type).innerHTML = this.responseText;
+        }
+        };
+        xhttp.open("GET", "{% url 'Reports:invoice_summary' %}?report_type=count&type=" + my_type, true);
+        xhttp.send();
+    } 
+    invoices_value_no(1);
+    invoices_value_no(4);
+    invoices_value_no(5);
+    invoices_value_no(6);
+    invoices_count_no(1);
+    invoices_count_no(4);
+    invoices_count_no(5);
+    invoices_count_no(6);
+
+    function invoices_total_out(my_type) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("total_out"+my_type).innerHTML = this.responseText;
+        }
+        };
+        xhttp.open("GET", "{% url 'Reports:invoice_summary' %}?report_type=total_out&type=" + my_type, true);
+        xhttp.send();
+    } 
+    
+    invoices_total_out(11);
+
+</script>
+
+
+<!--Ajax to invoices card when user choise date-->
+<script>
+$( document ).ready( function() {
+            $('#branch_click').click(function(){
+                function branch_invoices(my_type) {
+                    var branch = $('#branch').val();
+                    $.ajax({
+                        url: "{% url 'Reports:branch' %}?report_type=count&type=" + my_type + "&branch=" + branch , 
+                        success: function (res) {
+                            document.getElementById('count'+my_type).innerText = res
+                        }
+                    });
+                };
+                branch_invoices(1);
+                branch_invoices(4);
+                branch_invoices(5);
+                branch_invoices(6);
+        });
+
+    $('#invoices_clk').click(function(){
+        // Count With Date  
+        function invoices_count(my_type) {
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var invoice_id = my_type;
+            var myarr = [from_date, to_date, invoice_id]
+            $.ajax({
+                url: "{% url 'Reports:invoice_summary_date' %}?report_type=count&myarr=" + myarr, 
+                success: function (res) {
+                    document.getElementById('count'+my_type).innerText = res
+                }
+            });
+        };
+
+
+        
+        // Value with Date 
+        function invoices_value(my_type) {
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var invoice_id = my_type;
+            var myarr = [from_date, to_date, invoice_id]
+            $.ajax({
+                url: "{% url 'Reports:invoice_summary_date' %}?report_type=value&myarr=" + myarr,
+                success: function (res) {
+                    document.getElementById('total'+my_type).innerText = res
+                }
+            });
+        };
+        // Total out With Date 
+        function invoices_total_out(my_type) {
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var invoice_id = my_type;
+            var myarr = [from_date, to_date, invoice_id]
+            $.ajax({
+                url: "{% url 'Reports:invoice_summary_date' %}?report_type=total_out&myarr=" + myarr,
+                success: function (res) {
+                    document.getElementById('total_out'+my_type).innerText = res
+                    
+                }
+            });
+        };
+            // Total Of Customers With Date 
+            function customer_sammery_date() {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var myarr = [from_date,to_date]
+                $.ajax({
+                    url: "{% url 'Reports:customer_sammery_date' %}?myarr=" + myarr,
+                    success: function (res) {
+                        document.getElementById('customer_sammery').innerText = res
+                        
+                    }
+                });
+            };
+                customer_sammery_date(); // اجمالي العملاء
+                invoices_count(1);// عدد المبيعات 
+                invoices_count(4); // عدد المشتريات
+                invoices_count(5); // عدد مرتجع المبيعات
+                invoices_count(6); // عدد مرتجع المتشريات
+                invoices_value(1);// المبيعات الاجمالي بعد الخصم  
+                invoices_value(4); // المشتريات الاجمالي بعد الخصم 
+                invoices_value(5); // مرتجع المبيعات الاجمالي بعد الخصم 
+                invoices_value(6); //  مرتجع المبيعات الاجمالي بعد الخص 
+                invoices_total_out(11); // المصروفات
+
+               
+           
+    });
+});
+
+
+</script>
+
+
+<!-- Ajax for debitors and craditors and customer  -->
+<script>
+
+    // Debitors 
+    function debitors_summery() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("all_depetors").innerHTML = this.responseText;
+        }
+        };
+        xhttp.open("GET", "{% url 'Reports:debitors_summery' %}", true );
+        xhttp.send();
+    }
+    debitors_summery()
+        
+        // Craditors
+        function craditors_summery() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("all_craditors").innerHTML = this.responseText;
+            }
+            };
+            xhttp.open("GET", "{% url 'Reports:craditors_summery' %}", true );
+            xhttp.send();
+        }
+        craditors_summery()
+            
+            // Total of Customers 
+            function customer_sammery() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("customer_sammery").innerHTML = this.responseText;
+                }
+                };
+                xhttp.open("GET", "{% url 'Reports:customer_sammery' %}", true );
+                xhttp.send();
+            }
+            customer_sammery()          
+</script>
+
+
+
+<!--Ajax request every 1 min update user last seen-->
+<script>
+    setInterval(function() {
+        $( document ).ready( function() {
+            $( '#all_users' ).html( '&nbsp;' ).load( "{% url 'Chat:users' %}");
+        });
+  }, 60000); 
+</script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+    <option value="">---------</option>
+    <option value="{{ product.main_unit.id }}" >{{ product.main_unit.name }}</option>
+    {%  for item in produc_units %}
+        <option value="{{ item.unit_name.id }}">{{ item.unit_name.name }}</option>
+    {% endfor %}
